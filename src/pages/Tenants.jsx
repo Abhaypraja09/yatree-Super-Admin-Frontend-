@@ -60,7 +60,7 @@ const Tenants = () => {
   const fetchTenants = async () => {
     try {
       const token = localStorage.getItem('sa_token')
-      const { data } = await axios.get('http://localhost:4000/api/tenants', {
+      const { data } = await axios.get('/api/tenants', {
         headers: { Authorization: `Bearer ${token}` }
       })
       setTenants(data)
@@ -167,13 +167,13 @@ const Tenants = () => {
         if (!formData.logoFile && formData.logo) submissionData.append('logo', formData.logo)
         if (!formData.signatureFile && formData.signature) submissionData.append('signature', formData.signature)
 
-        await axios.put(`http://localhost:4000/api/tenants/${editingTenant._id}`, submissionData, {
+        await axios.put(`/api/tenants/${editingTenant._id}`, submissionData, {
           headers: { 
             Authorization: `Bearer ${token}`
           }
         })
       } else {
-        await axios.post('http://localhost:4000/api/tenants', submissionData, {
+        await axios.post('/api/tenants', submissionData, {
           headers: { 
             Authorization: `Bearer ${token}`
           }
@@ -192,7 +192,7 @@ const Tenants = () => {
     if (!window.confirm('Delete this client? This cannot be undone.')) return
     try {
       const token = localStorage.getItem('sa_token')
-      await axios.delete(`http://localhost:4000/api/tenants/${id}`, {
+      await axios.delete(`/api/tenants/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       fetchTenants()

@@ -52,8 +52,8 @@ const Dashboard = () => {
             const headers = { Authorization: `Bearer ${token}` }
 
             const [tenantsRes, statsRes] = await Promise.all([
-               axios.get('http://localhost:4000/api/tenants', { headers }),
-               axios.get('http://localhost:4000/api/dashboard/stats', { headers })
+               axios.get('/api/tenants', { headers }),
+               axios.get('/api/dashboard/stats', { headers })
             ])
 
             setTenants(tenantsRes.data)
