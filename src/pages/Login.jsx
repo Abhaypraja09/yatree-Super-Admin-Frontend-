@@ -5,8 +5,8 @@ import { motion } from 'framer-motion'
 import { ShieldCheck, Lock, Mail, ArrowRight, ShieldAlert } from 'lucide-react'
 
 const Login = () => {
-  const [email, setEmail] = useState('superadmin@texi.com')
-  const [password, setPassword] = useState('superpassword123')
+  const [email, setEmail] = useState('admin@texi.com')
+  const [password, setPassword] = useState('@2526Bigday')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()

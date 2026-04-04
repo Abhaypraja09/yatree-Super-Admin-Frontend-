@@ -63,9 +63,11 @@ const Tenants = () => {
       const { data } = await axios.get('/api/tenants', {
         headers: { Authorization: `Bearer ${token}` }
       })
-      setTenants(data)
+      // Defensive check for array
+      setTenants(Array.isArray(data) ? data : [])
     } catch (err) {
       console.error(err)
+      setTenants([]) // Safe fallback
     } finally {
       setLoading(false)
     }
@@ -188,16 +190,18 @@ const Tenants = () => {
     }
   }
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Delete this client? This cannot be undone.')) return
+  const handleLoginAs = async (id) => {
     try {
       const token = localStorage.getItem('sa_token')
-      await axios.delete(`/api/tenants/${id}`, {
+      const { data } = await axios.post(`/api/tenants/${id}/login-as`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      fetchTenants()
+      if (data.redirectUrl) {
+        window.open(data.redirectUrl, '_blank')
+      }
     } catch (err) {
-      alert('Failed to delete client')
+      console.error(err)
+      alert(err.response?.data?.message || 'Failed to connect to tenant dashboard')
     }
   }
 
@@ -255,7 +259,7 @@ const Tenants = () => {
                       Infrastructure sync in progress...
                    </td>
                 </tr>
-              ) : tenants.length === 0 ? (
+              ) : Array.isArray(tenants) && tenants.length === 0 ? (
                 <tr>
                    <td colSpan="5" className="p-32 text-center">
                       <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -265,7 +269,7 @@ const Tenants = () => {
                    </td>
                 </tr>
               ) : (
-                tenants.map(tenant => (
+                Array.isArray(tenants) && tenants.map(tenant => (
                   <tr key={tenant._id} className="hover:bg-slate-50/30 transition-all group">
                     <td className="p-8 pl-10">
                        <div className="flex items-center gap-5">
@@ -311,11 +315,10 @@ const Tenants = () => {
                        </div>
                     </td>
                     <td className="p-8 pr-10 text-right">
-                       <div className="flex items-center justify-end gap-3">
+                        <div className="flex items-center justify-end gap-3">
                           <button onClick={() => handleOpenModal(tenant)} className="w-10 h-10 rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-indigo-600 hover:border-indigo-600 hover:shadow-lg transition-all flex items-center justify-center"> <Edit2 size={18} /> </button>
                           <button onClick={() => handleDelete(tenant._id)} className="w-10 h-10 rounded-xl bg-white border border-slate-100 text-slate-400 hover:text-red-600 hover:border-red-600 hover:shadow-lg transition-all flex items-center justify-center"> <Trash2 size={18} /> </button>
-                          <button className="w-10 h-10 rounded-xl bg-slate-900 text-white hover:bg-indigo-600 transition-all flex items-center justify-center shadow-lg shadow-slate-900/20"> <ExternalLink size={18} /> </button>
-                       </div>
+                        </div>
                     </td>
                   </tr>
                 ))

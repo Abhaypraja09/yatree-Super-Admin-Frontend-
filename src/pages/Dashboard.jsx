@@ -56,10 +56,13 @@ const Dashboard = () => {
                axios.get('/api/dashboard/stats', { headers })
             ])
 
-            setTenants(tenantsRes.data)
-            setStats(statsRes.data)
+            // Defensive check for data structure
+            const tenantsData = Array.isArray(tenantsRes.data) ? tenantsRes.data : [];
+            setTenants(tenantsData)
+            setStats(statsRes.data || { totalTenants: 0, activeTenants: 0, trialTenants: 0, monthlyRevenue: 0 })
          } catch (err) {
             console.error('Fetch error:', err)
+            setTenants([]) // Safe fallback
          } finally {
             setLoading(false)
          }
@@ -68,12 +71,12 @@ const Dashboard = () => {
    }, [])
 
    // Calculate expiring soon (within 7 days)
-   const expiringSoon = tenants.filter(t => {
+   const expiringSoon = Array.isArray(tenants) ? tenants.filter(t => {
       const expiry = t.trialEndsAt || t.expiresAt
       if (!expiry) return false
       const daysLeft = Math.ceil((new Date(expiry) - new Date()) / (1000 * 60 * 60 * 24))
       return daysLeft > 0 && daysLeft <= 7
-   })
+   }) : []
 
    return (
       <div className="flex bg-[#f8fafc] text-slate-900 min-h-screen">
