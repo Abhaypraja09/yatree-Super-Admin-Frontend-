@@ -1,11 +1,11 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { 
-  LayoutDashboard, 
-  Users, 
-  CreditCard, 
-  Settings, 
-  LogOut, 
+import {
+  LayoutDashboard,
+  Users,
+  CreditCard,
+  Settings,
+  LogOut,
   ShieldCheck,
   Zap,
   Globe,
@@ -14,12 +14,12 @@ import {
 import { motion } from 'framer-motion'
 
 const SidebarItem = ({ to, icon: Icon, label }) => (
-  <NavLink 
-    to={to} 
+  <NavLink
+    to={to}
     className={({ isActive }) => `
       flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 group relative mb-1
-      ${isActive 
-        ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/40' 
+      ${isActive
+        ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/40'
         : 'text-slate-200/60 hover:text-white hover:bg-white/10'}
     `}
   >
@@ -46,7 +46,7 @@ const Sidebar = () => {
           <ShieldCheck size={28} className="text-white" />
         </div>
         <div>
-          <h1 className="text-xl font-black tracking-tighter text-white leading-none">ROOT<span className="text-indigo-500 block text-[9px] tracking-[4px] mt-1 font-black">AUTHORITY</span></h1>
+          <h1 className="text-xl font-black tracking-tighter text-white leading-none">Main<span className="text-indigo-500 block text-[9px] tracking-[4px] mt-1 font-black">AUTHORITY</span></h1>
         </div>
       </div>
 
@@ -56,7 +56,7 @@ const Sidebar = () => {
         <SidebarItem to="/" icon={LayoutDashboard} label="Overview" />
         <SidebarItem to="/tenants" icon={Users} label="Client Registry" />
         <SidebarItem to="/plans" icon={CreditCard} label="Billing Matrix" />
-        
+
         <p className="text-[9px] font-black text-slate-500 uppercase tracking-[3px] my-10 px-2 opacity-40">Global Protocol</p>
         <SidebarItem to="/settings" icon={Settings} label="Settings" />
         <SidebarItem to="/notifications" icon={Bell} label="Broadcasts" />
@@ -75,8 +75,8 @@ const Sidebar = () => {
             </div>
           </div>
         </div>
-        
-        <button 
+
+        <button
           onClick={handleLogout}
           className="w-full p-5 rounded-2xl bg-red-500/10 text-red-500 font-black text-[10px] uppercase tracking-[3px] transition-all hover:bg-red-500 hover:text-white flex items-center justify-center gap-3 border border-red-500/10 shadow-lg shadow-red-500/5"
         >
